@@ -1,6 +1,14 @@
 # qa-kit
-
-Reserved namespace for a future Python API testing toolkit.
+Work in progress
+qa-kit — Production-ready Test Generator
+Generates pytest integration tests from a JSON test specification file (API URL, method, params,
+body, expected response)
+Provides a CLI to generate and run tests ( Typer )
+Uses Poetry for packaging
+Includes httpx, pytest-asyncio and allure-pytest integration
+Adds robust error handling, logging, and pytest fixtures
+Ships a GitHub Actions workflow to run tests and publish Allure reports
+You can copy these files into a repo qa-kit install and you're ready to generate and run tests.
 
 ## Installation
 
