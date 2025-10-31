@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "qa-kit"
+version = "0.0.1"
+description = "Reserved namespace for a future Python API testing toolkit"
+authors = ["Your Name <roshanguptamca@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/roshanguptamca/qa-kit"
+repository = "https://github.com/roshanguptamca/qa-kit"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
