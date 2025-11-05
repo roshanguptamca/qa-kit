@@ -13,7 +13,7 @@ def run_pytest(
     extra_args: list[str] = None,
     allure_dir: str = "allure-results",
     open_report: bool = False,
-    ssl_verify: bool = True
+    ssl_verify: bool = False
 ) -> int:
     """
     Run pytest programmatically with Allure results.

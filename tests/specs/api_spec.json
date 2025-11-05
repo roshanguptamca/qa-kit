@@ -1,0 +1,54 @@
+{
+  "name": "JSONPlaceholder API Suite",
+  "base_url": "https://jsonplaceholder.typicode.com",
+  "tests": [
+    {
+      "id": "get-posts",
+      "name": "get_posts",
+      "method": "GET",
+      "path": "/posts",
+      "expected": {
+        "status_code": 200,
+        "json": [
+          {
+            "userId": 1,
+            "id": 1
+          }
+        ]
+      },
+      "ignore_json": ["title", "body"]
+    },
+    {
+      "id": "get-post-1",
+      "name": "get_post_1",
+      "method": "GET",
+      "path": "/posts/1",
+      "expected": {
+        "status_code": 200,
+        "json": {
+          "userId": 1,
+          "id": 1
+        }
+      }
+    },
+    {
+      "id": "create-post",
+      "name": "create_post",
+      "method": "POST",
+      "path": "/posts",
+      "body": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      },
+      "expected": {
+        "status_code": 201,
+        "json": {
+          "title": "foo",
+          "body": "bar",
+          "userId": 1
+        }
+      }
+    }
+  ]
+}

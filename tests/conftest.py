@@ -18,7 +18,7 @@ def ssl_verify():
     - False -> disable verification
     Can also provide path to CA bundle.
     """
-    val = os.getenv("QA_SSL_VERIFY", "true").lower()
+    val = os.getenv("QA_SSL_VERIFY", "false").lower()
     if val in ["false", "0", "no"]:
         return False
     return True
