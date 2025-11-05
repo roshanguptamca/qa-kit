@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "qa-kit"
-version = "0.1.2"
+version = "0.1.4"
 packages = [{ include = "qa_kit", from = "src" }]
 description = "CLI + generator for REST API pytest integration tests with Allure reporting"
 authors = ["Roshan Gupta <roshanguptamca@gmail.com>"]
