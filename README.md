@@ -3,6 +3,11 @@
 **QA-Kit** is a CLI and test generator for REST API integration tests using **pytest** and **httpx**, with built-in support for **Allure reporting**. Generate tests from JSON specifications, run them asynchronously, and generate detailed HTML reports.
 
 ---
+## Documentation
+
+For detailed usage instructions, CI/CD examples, and setup guide, see the full documentation:
+
+[QA-Kit User Guide (Google Docs)](https://docs.google.com/document/d/10j6AAWTP2WhPDghi9L3MmLJgjmWtkbnyXdMrW6Do1MI/edit?usp=sharing)
 
 ## Features
 
