@@ -11,33 +11,79 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - uses: actions/checkout@v4
 
+      # 2️⃣ Set up Python 3.13
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
+      # 3️⃣ Install Poetry
       - name: Install Poetry
         run: curl -sSL https://install.python-poetry.org | python3 -
 
+      # 4️⃣ Add Poetry to PATH
       - name: Add Poetry to PATH
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
+      # 5️⃣ Install dependencies and package itself
       - name: Install dependencies
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction
 
+      # 6️⃣ Run unit tests
       - name: Run unit tests
-        run: poetry run pytest -q
+        run: poetry run pytest -q --tb=short
 
-      - name: Generate tests from sample spec
-        run: poetry run python -m qa_kit.cli generate tests/sample_specs/api_spec.json --out tests/generated
+      # 7️⃣ Generate tests from JSON spec
+      - name: Generate tests from spec
+        run: poetry run python -m qa_kit.cli generate tests/specs/api_spec.json --out tests/generated
 
-      - name: Run generated tests and collect Allure results
+      # 8️⃣ Run generated tests and collect Allure results
+      - name: Run generated tests
         run: poetry run python -m qa_kit.cli run --test-path tests/generated --allure-dir allure-results
 
-      - name: Upload Allure artifact
+      # 9️⃣ Install Allure CLI
+      - name: Install Allure CLI
+        run: |
+          sudo apt update
+          sudo apt install -y openjdk-11-jdk unzip curl
+          curl -sSL https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip -o allure.zip
+          unzip -q allure.zip -d /tmp
+          sudo mv /tmp/allure-2.27.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+          allure --version
+
+      # 🔟 Generate Allure HTML report
+      - name: Generate Allure HTML report
+        run: |
+          if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
+            allure generate allure-results -o allure-report --clean
+          else
+            echo "⚠️ No Allure results found to generate report."
+          fi
+
+      # 1️⃣1️⃣ Upload Allure results artifact
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      # 1️⃣2️⃣ Upload Allure HTML report artifact
+      - name: Upload Allure HTML report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: allure-results
+          path: allure-report
+
+      - name: Publish Allure Report to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.REPORT_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
+          user_name: 'qa-kit-bot'
+          user_email: 'qa-kit-bot@example.com'

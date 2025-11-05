@@ -6,9 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @pytest.fixture(scope="session")
 def base_url():
     return os.getenv("API_BASE_URL", "https://api.acc.kpn.org/shop-core/v1")
+
 
 @pytest.fixture(scope="session")
 def ssl_verify():
@@ -23,7 +25,10 @@ def ssl_verify():
         return False
     return True
 
+
 @pytest_asyncio.fixture
 async def client(base_url, ssl_verify):
-    async with httpx.AsyncClient(base_url=base_url, verify=ssl_verify, timeout=10.0) as c:
+    async with httpx.AsyncClient(
+        base_url=base_url, verify=ssl_verify, timeout=10.0
+    ) as c:
         yield c

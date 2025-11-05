@@ -8,12 +8,13 @@ import pytest
 
 logger = logging.getLogger(__name__)
 
+
 def run_pytest(
     test_path: str,
     extra_args: list[str] = None,
     allure_dir: str = "allure-results",
     open_report: bool = False,
-    ssl_verify: bool = False
+    ssl_verify: bool = False,
 ) -> int:
     """
     Run pytest programmatically with Allure results.
@@ -46,7 +47,9 @@ def run_pytest(
     return exit_code
 
 
-def generate_allure_html(allure_dir: str = "allure-results", report_dir: str = "allure-report"):
+def generate_allure_html(
+    allure_dir: str = "allure-results", report_dir: str = "allure-report"
+):
     """
     Generate Allure HTML report using Docker.
     Requires Docker installed.
@@ -64,11 +67,19 @@ def generate_allure_html(allure_dir: str = "allure-results", report_dir: str = "
         return
 
     docker_cmd = [
-        "docker", "run", "--rm",
-        "-v", f"{results.absolute()}:/allure-results",
-        "-v", f"{report.absolute()}:/allure-report",
-        "allure/allure", "generate", "/allure-results",
-        "-o", "/allure-report", "--clean"
+        "docker",
+        "run",
+        "--rm",
+        "-v",
+        f"{results.absolute()}:/allure-results",
+        "-v",
+        f"{report.absolute()}:/allure-report",
+        "allure/allure",
+        "generate",
+        "/allure-results",
+        "-o",
+        "/allure-report",
+        "--clean",
     ]
 
     try:
@@ -81,6 +92,8 @@ def generate_allure_html(allure_dir: str = "allure-results", report_dir: str = "
         else:
             logger.warning("⚠️ Allure HTML report generation failed.")
     except FileNotFoundError:
-        logger.warning("⚠️ Docker not found. Install Docker to generate Allure HTML reports.")
+        logger.warning(
+            "⚠️ Docker not found. Install Docker to generate Allure HTML reports."
+        )
     except subprocess.CalledProcessError as e:
         logger.error(f"❌ Failed to generate Allure report: {e}")

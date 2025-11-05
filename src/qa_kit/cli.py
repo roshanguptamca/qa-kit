@@ -8,7 +8,9 @@ from qa_kit.utils import load_json
 from qa_kit.generator import TestGenerator
 from qa_kit.runner import run_pytest
 
-app = typer.Typer(help="QA-Kit: Generate and run API integration tests from JSON specs.")
+app = typer.Typer(
+    help="QA-Kit: Generate and run API integration tests from JSON specs."
+)
 
 # Logging setup
 logging.basicConfig(
@@ -21,8 +23,15 @@ logger = logging.getLogger(__name__)
 
 @app.command()
 def generate(
-    spec: str = typer.Argument(..., help="Path to JSON spec file describing APIs and expected responses."),
-    out: str = typer.Option("tests/generated", "--out", "-o", help="Output directory for generated pytest files."),
+    spec: str = typer.Argument(
+        ..., help="Path to JSON spec file describing APIs and expected responses."
+    ),
+    out: str = typer.Option(
+        "tests/generated",
+        "--out",
+        "-o",
+        help="Output directory for generated pytest files.",
+    ),
 ):
     """
     Generate pytest test files from a JSON spec definition.
@@ -49,11 +58,30 @@ def generate(
 
 @app.command()
 def run(
-    spec: str = typer.Option(None, "--spec", "-s", help="Optional spec file to generate tests before running."),
-    test_path: str = typer.Option("tests/generated", "--test-path", "-t", help="Path to tests to execute."),
-    allure_dir: str = typer.Option("allure-results", "--allure-dir", "-a", help="Directory to store Allure results."),
-    open_report: bool = typer.Option(False, "--open-report", "-o", help="Generate and open Allure HTML report after tests."),
-    ssl_verify_cli: bool = typer.Option(None, "--ssl-verify/--no-ssl-verify", help="Enable or disable SSL verification."),
+    spec: str = typer.Option(
+        None,
+        "--spec",
+        "-s",
+        help="Optional spec file to generate tests before running.",
+    ),
+    test_path: str = typer.Option(
+        "tests/generated", "--test-path", "-t", help="Path to tests to execute."
+    ),
+    allure_dir: str = typer.Option(
+        "allure-results",
+        "--allure-dir",
+        "-a",
+        help="Directory to store Allure results.",
+    ),
+    open_report: bool = typer.Option(
+        False,
+        "--open-report",
+        "-o",
+        help="Generate and open Allure HTML report after tests.",
+    ),
+    ssl_verify_cli: bool = typer.Option(
+        None, "--ssl-verify/--no-ssl-verify", help="Enable or disable SSL verification."
+    ),
 ):
     """
     Optionally generate tests, then execute pytest and collect Allure reports.
@@ -75,13 +103,15 @@ def run(
             data = load_json(spec)
             TestGenerator(data, out_dir=test_path).generate()
 
-        logger.info(f"🚀 Running pytest on {test_path} with Allure results in {allure_dir} (SSL_VERIFY={ssl_verify})")
+        logger.info(
+            f"🚀 Running pytest on {test_path} with Allure results in {allure_dir} (SSL_VERIFY={ssl_verify})"
+        )
         exit_code = run_pytest(
             test_path,
             extra_args=["--alluredir", allure_dir],
             allure_dir=allure_dir,
             open_report=open_report,
-            ssl_verify=ssl_verify
+            ssl_verify=ssl_verify,
         )
 
         if exit_code == 0:

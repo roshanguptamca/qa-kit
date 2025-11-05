@@ -5,6 +5,7 @@ from typing import Any, Dict
 
 logger = logging.getLogger(__name__)
 
+
 def load_json(path: str) -> Dict[str, Any]:
     """
     Load and validate the input JSON spec file.
