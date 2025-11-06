@@ -1,0 +1,69 @@
+{
+  "name": "DummyJSON API Suite",
+  "base_url": "https://dummyjson.com",
+  "tests": [
+    {
+      "id": "get-products",
+      "name": "get_products",
+      "method": "GET",
+      "path": "/products",
+      "expected": {
+        "status_code": 200,
+        "json": {
+          "products": []
+        }
+      },
+      "ignore_json": ["products", "total", "skip", "limit"]
+    },
+    {
+      "id": "get-product-1",
+      "name": "get_product_1",
+      "method": "GET",
+      "path": "/products/1",
+      "expected": {
+        "status_code": 200,
+        "json": {
+          "id": 1
+        }
+      },
+      "ignore_json": ["title", "description", "price", "brand", "thumbnail", "images", "stock", "category"]
+    },
+    {
+      "id": "search-product",
+      "name": "search_product",
+      "method": "GET",
+      "path": "/products/search",
+      "params": { "q": "phone" },
+      "expected": {
+        "status_code": 200,
+        "json": {}
+      },
+      "ignore_json": ["products", "total", "skip", "limit"]
+    },
+    {
+      "id": "create-product",
+      "name": "create_product",
+      "method": "POST",
+      "path": "/products/add",
+      "body": {
+        "title": "QA Kit Test Product"
+      },
+      "expected": {
+        "status_code": 201,
+        "json": {
+          "title": "QA Kit Test Product"
+        }
+      },
+      "ignore_json": ["id"]
+    },
+    {
+      "id": "get-nonexistent-product",
+      "name": "get_nonexistent_product",
+      "method": "GET",
+      "path": "/products/999999",
+      "expected": {
+        "status_code": 404
+      }
+    }
+  ]
+}

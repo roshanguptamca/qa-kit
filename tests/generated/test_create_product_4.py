@@ -4,12 +4,12 @@ import httpx
 from tests.utils.test_helpers import _assert_partial, SSL_VERIFY, pytestmark
 import asyncio
 
-BASE_URL = "https://jsonplaceholder.typicode.com"
+BASE_URL = "https://dummyjson.com"
 
 
-@allure.story("JSONPlaceholder API Suite")
-async def test_create_post_create_post():
-    """create_post"""
+@allure.story("DummyJSON API Suite")
+async def test_create_product_create_product():
+    """create_product"""
     async with httpx.AsyncClient(
         base_url=BASE_URL, headers={}, verify=SSL_VERIFY
     ) as client:
@@ -18,8 +18,8 @@ async def test_create_post_create_post():
             try:
                 resp = await client.request(
                     "POST",
-                    "/posts",
-                    json={"title": "foo", "body": "bar", "userId": 1},
+                    "/products/add",
+                    json={"title": "QA Kit Test Product"},
                     params={},
                     timeout=10,
                 )
@@ -31,8 +31,8 @@ async def test_create_post_create_post():
 
     assert resp.status_code == 201
     _assert_partial(
-        {"title": "foo", "body": "bar", "userId": 1},
+        {"title": "QA Kit Test Product"},
         resp.json(),
-        ignore_keys=[],
+        ignore_keys=["id"],
         use_wildcard=False,
     )

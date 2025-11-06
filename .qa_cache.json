@@ -1,0 +1,42 @@
+{
+  "get-posts": {
+    "hash": "64048cb534266a568eff6683c4d25d36",
+    "file": "tests/generated/test_get_posts_1.py"
+  },
+  "get-post-1": {
+    "hash": "a277f197ac15f0a3bad786b95e9384ab",
+    "file": "tests/generated/test_get_post_1_2.py"
+  },
+  "create-post": {
+    "hash": "b4403e7854f923c9bea525c59684468e",
+    "file": "tests/generated/test_create_post_3.py"
+  },
+  "get-products": {
+    "hash": "245b5c69ce78d555e0ab8891b348bfc8",
+    "file": "tests/generated/test_get_products_1.py"
+  },
+  "get-product-1": {
+    "hash": "5571a8d0e434b47b9dc95c20c0bb6372",
+    "file": "tests/generated/test_get_product_1_2.py"
+  },
+  "search-product": {
+    "hash": "a2867f607d5acf66589c976fef35893c",
+    "file": "tests/generated/test_search_product_3.py"
+  },
+  "create-product": {
+    "hash": "bae9ba4a4df36fd549392fd78bb37940",
+    "file": "tests/generated/test_create_product_4.py"
+  },
+  "get-nonexistent-product": {
+    "hash": "593773704cebe7bf76d0fe37ac4e7854",
+    "file": "tests/generated/test_get_nonexistent_product_5.py"
+  },
+  "get-users": {
+    "hash": "9127cb88d24a5b591a2af724069d4c4e",
+    "file": "tests/generated/test_get_users_1.py"
+  },
+  "get-single-user": {
+    "hash": "2a857d8fbf655961ea3623a15060a257",
+    "file": "tests/generated/test_get_single_user_2.py"
+  }
+}

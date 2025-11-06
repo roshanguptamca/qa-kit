@@ -1,0 +1,43 @@
+{
+  "name": "ReqRes API Suite",
+  "base_url": "https://reqres.in/api",
+  "tests": [
+    {
+      "id": "get-users",
+      "name": "get_users",
+      "method": "GET",
+      "path": "/users",
+      "params": { "page": 2 },
+      "headers": {
+        "X-Test-Header": "MyHeaderValue"
+      },
+      "use_oauth": false,
+      "expected": {
+        "status_code": 200,
+        "json": {
+          "page": 2
+        }
+      },
+      "ignore_json": ["data", "support"]
+    },
+    {
+      "id": "get-single-user",
+      "name": "get_single_user",
+      "method": "GET",
+      "path": "/users/2",
+      "headers": {
+        "X-Test-Header": "MyHeaderValue"
+      },
+      "use_oauth": false,
+      "expected": {
+        "status_code": 200,
+        "json": {
+          "data": {
+            "id": 2
+          }
+        }
+      },
+      "ignore_json": ["data.email", "data.first_name", "data.last_name", "data.avatar"]
+    }
+  ]
+}

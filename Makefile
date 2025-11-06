@@ -14,6 +14,10 @@ ALLURE_REPORT := allure-report
 QA_KIT_SSL_VERIFY ?= false
 USE_WILDCARD ?= false
 IGNORE_ASSERT ?= false
+QA_TOKEN_URL ?= http://localhost:8000/oauth/token
+QA_CLIENT_ID ?= client-id
+QA_CLIENT_SECRET ?= client-secret
+QA_SCOPE ?= read write
 
 # -----------------------------
 # Default target
@@ -39,7 +43,7 @@ run:
 	@QA_KIT_SSL_VERIFY=$(QA_KIT_SSL_VERIFY) USE_WILDCARD=$(USE_WILDCARD) IGNORE_ASSERT=$(IGNORE_ASSERT) \
 	qa_kit run -t $(TEST_DIR) -o
 
-# Generate tests from JSON specs
+# Generate tests from JSON specs (skips unchanged files)
 .PHONY: generate
 generate:
 	@echo "🧾 Generating tests from JSON specs in $(SPEC_DIR)..."
@@ -48,7 +52,7 @@ generate:
 	else \
 		for spec in $(SPEC_DIR)/*.json; do \
 			if [ -f $$spec ]; then \
-				echo "🔹 Generating tests from $$spec"; \
+				echo "🔹 Processing $$spec"; \
 				QA_KIT_SSL_VERIFY=$(QA_KIT_SSL_VERIFY) USE_WILDCARD=$(USE_WILDCARD) IGNORE_ASSERT=$(IGNORE_ASSERT) \
 				qa_kit generate $$spec -o $(TEST_DIR); \
 			fi; \
@@ -74,7 +78,7 @@ sort:
 	@echo "📦 Sorting imports with isort..."
 	@isort .
 
-.PHONY: check
+.PHONY: check lint
 check: lint
 	@echo "✅ Lint check passed!"
 
@@ -129,9 +133,15 @@ publish:
 		poetry publish; \
 	fi
 
-# Full workflow: clean → generate → run → report → open
+# Full workflow: generate only if needed → run → report → open
 .PHONY: full
-full: clean generate run_tests report open
+full:
+	@echo "🟢 Starting full QA-Kit workflow..."
+	@make generate
+	@make run_tests
+	@make report
+	@make open
+	@echo "✅ Full workflow completed."
 
 # -----------------------------
 # Help
@@ -144,11 +154,15 @@ help:
 	@echo "  QA_KIT_SSL_VERIFY=true|false   # Enable/disable SSL verification (default: false)"
 	@echo "  USE_WILDCARD=true|false        # Enable recursive wildcard for ignore_keys (default: false)"
 	@echo "  IGNORE_ASSERT=true|false       # Skip all JSON assertions (default: false)"
+	@echo "  QA_TOKEN_URL=...               # OAuth2 token URL (default localhost)"
+	@echo "  QA_CLIENT_ID=...                # OAuth2 client ID"
+	@echo "  QA_CLIENT_SECRET=...            # OAuth2 client secret"
+	@echo "  QA_SCOPE=...                    # OAuth2 scope"
 	@echo ""
 	@echo "Targets:"
 	@echo "  run_tests    Run all tests"
 	@echo "  run          Run tests in $(TEST_DIR)"
-	@echo "  generate     Generate tests from JSON specs in $(SPEC_DIR)"
+	@echo "  generate     Generate tests from JSON specs in $(SPEC_DIR) (skips unchanged)"
 	@echo "  lint         Lint generated tests"
 	@echo "  format       Format Python code with Black"
 	@echo "  sort         Sort imports with isort"
@@ -156,6 +170,7 @@ help:
 	@echo "  report       Generate Allure HTML report"
 	@echo "  open         Open Allure HTML report"
 	@echo "  clean        Remove Allure results and report"
-	@echo "  full         Clean → generate → run → report → open"
-	@echo "  publish      Build and publish package to PyPI"
+	@echo "  full         Generate → Run → Report → Open"
+	@echo "  build        Build package"
+	@echo "  publish      Publish package to PyPI"
 	@echo "  help         Show this help message"
