@@ -109,7 +109,21 @@ pip install git+https://github.com/roshanguptamca/qa-kit.git
         ```
 2. Generate tests
     ```bash 
-   qa_kit generate tests/specs/cart_api.json -o tests/generated
+    qa_kit generate tests/specs/cart_api.json -o tests/generated
+   
+   # Dry-run / verbose only
+    qa_kit generate tests/specs --verbose --dry
+    
+    # Actual generation with delta
+    qa_kit generate tests/specs --delta --verbose
+
+    qa_kit generate tests/specs/ --verbose
+
+    # Generate only changed/new tests
+    qa_kit generate tests/specs/ --verbose --delta
+
+    # Delta mode + cleanup obsolete
+    qa_kit generate tests/specs/ --verbose --delta --clean-removed
     ```
 3. Run tests with Allure reporting
     ```bash` qa_kit run -t tests/generated

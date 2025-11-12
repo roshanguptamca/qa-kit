@@ -2,21 +2,17 @@ import os
 import pytest
 import fnmatch
 
-# Module-level async marker for pytest
 pytestmark = pytest.mark.asyncio
 
-# SSL verification from environment (default False)
 SSL_VERIFY = os.getenv("QA_KIT_SSL_VERIFY", "false").lower() not in ("0", "false", "no")
 
 
 def _path_matches_any(path: str, patterns: list[str], use_wildcard: bool) -> bool:
     for pat in patterns or []:
-        if use_wildcard:
-            if fnmatch.fnmatch(path, pat):
-                return True
-        else:
-            if path == pat or path.startswith(pat + "."):
-                return True
+        if use_wildcard and fnmatch.fnmatch(path, pat):
+            return True
+        elif path == pat or path.startswith(pat + "."):
+            return True
     return False
 
 
